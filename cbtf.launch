@@ -1,0 +1,17 @@
+<launch>
+<!-- <node pkg="tf" type="static_transform_publisher" name="kinect_calib" args="0 0 0 0 0 0 1 head kinect_link 50"/> -->
+<node pkg="tf" type="static_transform_publisher" name="kinect_sensor" args="0 0 0 -0.500 0.500 -0.500 0.500 kinect_link kinect_pc_frame 50"/>
+
+<node pkg="tf" type="static_transform_publisher" name="camera_link_frame_bdcst" args="0.19 -0.00 0.08  -2.95 -4.1 -2.92   kinect_link camera_link 50"/>
+
+<remap from="/camera/depth_registered/points" to="/kinect/depth/points" />
+<include file="$(find freenect_launch)/launch/freenect.launch" />
+
+<!-- Found Dec 12 by Beta group -->
+<node pkg="tf" type="static_transform_publisher" name="torso_to_kinect_calibd_tf" args="0.0133948512375 -0.00269412994385 0.819457054138 -0.0484861396253 0.218672692776 0.0108797010034 0.974532186985 torso kinect_link 50" output="screen" /> 
+
+<node pkg="tf" type="static_transform_publisher" name="dummy_torso_to_base_link" args="0 0 0 0 0 0 1 torso base_link 50"/> 
+
+<!-- MOVE BACK LATER -->
+  <include file="$(find cartesian_planner)/launch/baxter_static_transforms.launch"/>     
+</launch>
